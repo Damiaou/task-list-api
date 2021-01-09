@@ -2,10 +2,10 @@
 
 ## Schema
 
-| Home |
-| ---- |
-| hash |
-| name |
+| Home                 |
+| -------------------- |
+| hash crc32 generated |
+| name                 |
 
 | User      |
 | --------- |

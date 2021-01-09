@@ -1,5 +1,7 @@
 const express = require("express");
 const { Pool } = require("pg");
+const bodyParser = require("body-parser");
+const crc32 = require("crc32");
 
 const app = express();
 
@@ -34,6 +36,13 @@ app.get("/", (req, res) => {
   res.send("<h2>Welcome to task list API</h2>");
 });
 
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true
+  })
+);
+
 // First home get and create
 app
   .route("/home")
@@ -54,15 +63,17 @@ const getHomes = (request, response) => {
 };
 
 const createHome = (request, response) => {
-  const { hash, label } = request.body;
+  const { label } = request.body;
+  const hash = crc32(label);
   pool.query(
     "INSERT INTO home (hash, label) VALUES ($1, $2)",
     [hash, label],
     (error, result) => {
       if (error) {
-        throw error
+        throw error;
       }
-      response.status(201).send(`Home added with hash: ${result.hash}`)
+
+      response.status(201).send(`Home added with hash: ${hash}`);
     }
   );
 };
