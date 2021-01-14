@@ -10,6 +10,16 @@ const getHomes = (request, response) => {
   });
 };
 
+const getHome = (request, response) => {
+  const hash = request.params.hash;
+  pool.query("SELECT * FROM home where hash = $1", [hash], (error, results) => {
+    if (error) {
+      throw error;
+    }
+    response.status(200).json(results.rows);
+  });
+};
+
 const createHome = (request, response) => {
   const { label } = request.body;
   const hash = crc32(label);
@@ -37,4 +47,4 @@ const deleteHome = (request, response) => {
   });
 };
 
-module.exports = { getHomes, createHome, deleteHome };
+module.exports = { getHomes, getHome, createHome, deleteHome };

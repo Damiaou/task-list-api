@@ -7,18 +7,19 @@
 | hash crc32 generated |
 | name                 |
 
-| User      |
-| --------- |
-| id        |
-| username  |
-| home_hash |
+| User        |
+| ----------- |
+| id          |
+| username    |
+| home_hash   |
+| color (hex) |  |
 
-| Repeat    |
-| --------- |
-| id        |
-| label     |
-| home_hash |
-| how_long  |
+| Repeat        |
+| ------------- |
+| id            |
+| label         |
+| home_hash     |
+| how_long (ms) |
 
 | Task       |
 | ---------- |
