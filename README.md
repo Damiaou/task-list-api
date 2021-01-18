@@ -16,19 +16,18 @@ PUT for user (color changing)
 | id          |
 | username    |
 | home_hash   |
-| color (hex) |  |
+| color (hex) |
 
-| Repeat        |
-| ------------- |
-| id            |
-| label         |
-| home_hash     |
-| how_long (ms) |
+| History |
+| ------- |
+| id      |
+| id_user |
+| id_task |
+| date    |
 
-| Task       |
-| ---------- |
-| id         |
-| id_repeat  |
-| label      |
-| done       |
-| id_done_by |
+| Task      |
+| --------- |
+| id        |
+| repeat    |
+| label     |
+| home_hash |

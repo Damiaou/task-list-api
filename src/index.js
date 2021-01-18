@@ -5,11 +5,11 @@ const { getHomes, getHome, createHome, deleteHome } = require("./home");
 const { getUsers, getUser, createUser, deleteUser } = require("./user");
 const { getTasks, getTask, createTask, deleteTask } = require("./task");
 const {
-  getRepeats,
-  getRepeat,
-  createRepeat,
-  deleteRepeat
-} = require("./repeat");
+  getHistories,
+  getHistory,
+  createHistory,
+  deleteHistory
+} = require("./history");
 
 const app = express();
 
@@ -47,14 +47,14 @@ app.get("/user/:id", getUser);
 app.post("/user", createUser);
 app.delete("/user/:id", deleteUser);
 
-//        REPEAT
-app.get("/repeat", getRepeats);
-app.get("/repeat/:id", getRepeat);
-app.post("/repeat", createRepeat);
-app.delete("/repeat/:id", deleteRepeat);
-
 //        TASK
 app.get("/task", getTasks);
 app.get("/task/:id", getTask);
 app.post("/task", createTask);
 app.delete("/task/:id", deleteTask);
+
+//        HISTORY
+app.get("/history", getHistories);
+app.get("/history/:id", getHistory);
+app.post("/history", createHistory);
+app.delete("/history/:id", deleteHistory);

@@ -20,10 +20,10 @@ const getTask = (request, response) => {
 };
 
 const createTask = (request, response) => {
-  const { label, done, id_repeat, id_done_by } = request.body;
+  const { label, repeat, home_hash } = request.body;
   pool.query(
     "INSERT INTO task (label, done, id_repeat, id_done_by) VALUES ($1, $2, $3)",
-    [label, done, id_repeat, id_done_by],
+    [label, repeat, home_hash],
     (error, result) => {
       if (error) {
         throw error;
