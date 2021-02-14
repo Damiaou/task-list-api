@@ -1,5 +1,24 @@
 const pool = require("./db.js");
 
+const login = (request, response) => {
+  const { email } = request.body;
+  const user = {};
+  pool.query(
+    "SELECT * FROM public.user WHERE email = $1",
+    [email],
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      if (results.rows.length > 0) {
+        //Login
+      } else {
+        // Insert and login
+      }
+    }
+  );
+};
+
 const getUsers = (request, response) => {
   pool.query("SELECT * FROM public.user", (error, results) => {
     if (error) {
@@ -10,10 +29,10 @@ const getUsers = (request, response) => {
 };
 
 const getUser = (request, response) => {
-  const { email, id } = request.body;
+  const email = request.params.email;
   pool.query(
-    "SELECT * FROM public.user where email = $1 OR id= $2",
-    [email, id],
+    "SELECT * FROM public.user where email = $1",
+    [email],
     (error, results) => {
       if (error) {
         throw error;

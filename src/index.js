@@ -3,7 +3,13 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const { getHomes, getHome, createHome, deleteHome } = require("./home");
 const { getUsers, getUser, createUser, deleteUser } = require("./user");
-const { getTasks, getTask, createTask, deleteTask } = require("./task");
+const {
+  getTasks,
+  getTask,
+  createTask,
+  deleteTask,
+  getTasksForHome
+} = require("./task");
 const {
   getHistories,
   getHistory,
@@ -43,12 +49,13 @@ app.delete("/home/:hash", deleteHome);
 
 //        USER
 app.get("/user", getUsers);
-app.get("/user/:id", getUser);
+app.get("/user/:email", cors(), getUser);
 app.post("/user", createUser);
 app.delete("/user/:id", deleteUser);
 
 //        TASK
 app.get("/task", getTasks);
+app.get("/taskForHome/:hash", getTasksForHome);
 app.get("/task/:id", getTask);
 app.post("/task", createTask);
 app.delete("/task/:id", deleteTask);

@@ -28,10 +28,11 @@ const createHome = (request, response) => {
     [hash, label],
     (error, result) => {
       if (error) {
-        throw error;
+        response.status(409).json(error);
+        return;
       }
 
-      response.status(201).send(`Home added with hash: ${hash}`);
+      response.status(201).json({ label: label, hash: hash });
     }
   );
 };

@@ -1,5 +1,19 @@
 const pool = require("./db.js");
 
+const getTasksForHome = (request, response) => {
+  const hash = request.params.hash;
+  pool.query(
+    "SELECT * FROM task WHERE home_hash = $1",
+    [hash],
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).json(results.rows);
+    }
+  );
+};
+
 const getTasks = (request, response) => {
   pool.query("SELECT * FROM task", (error, results) => {
     if (error) {
@@ -45,4 +59,4 @@ const deleteTask = (request, response) => {
   });
 };
 
-module.exports = { getTasks, getTask, createTask, deleteTask };
+module.exports = { getTasks, getTask, createTask, deleteTask, getTasksForHome };
