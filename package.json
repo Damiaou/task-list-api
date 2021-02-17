@@ -21,7 +21,9 @@
 		"pg": "8.5.1",
 		"prettier": "2.2.1",
 		"prisma": "2.16.1",
-		"rimraf": "^3.0.2"
+		"rimraf": "^3.0.2",
+		"@babel/preset-env": "^7.12.16",
+		"babel-polyfill": "^6.26.0"
 	},
 	"devDependencies": {
 		"@babel/cli": "^7.12.16",
