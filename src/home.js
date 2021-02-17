@@ -1,51 +1,47 @@
-const pool = require("./db.js");
-const crc32 = require("crc32");
+const pool = require('./db.js');
+const crc32 = require('crc32');
 
-const getHomes = (request, response) => {
-  pool.query("SELECT * FROM home", (error, results) => {
-    if (error) {
-      throw error;
-    }
-    response.status(200).json(results.rows);
-  });
+import { PrismaClient } from '@prisma/client';
+import { response } from 'express';
+const prisma = new PrismaClient();
+
+const getHomes = async (request, response) => {
+	const homes = await prisma.home.findMany();
+	response.status(200).json(homes);
 };
 
-const getHome = (request, response) => {
-  const hash = request.params.hash;
-  pool.query("SELECT * FROM home where hash = $1", [hash], (error, results) => {
-    if (error) {
-      throw error;
-    }
-    response.status(200).json(results.rows);
-  });
+const getHome = async (request, response) => {
+	const hash = request.params.hash;
+	const home = await prisma.home.findUnique({
+		where: {
+			hash,
+		},
+	});
+	response.status(200).json(home);
 };
 
-const createHome = (request, response) => {
-  const { label } = request.body;
-  const hash = crc32(label);
-  pool.query(
-    "INSERT INTO home (hash, label) VALUES ($1, $2)",
-    [hash, label],
-    (error, result) => {
-      if (error) {
-        response.status(409).json(error);
-        return;
-      }
-
-      response.status(201).json({ label: label, hash: hash });
-    }
-  );
+const createHome = async (request, response) => {
+	const { label } = request.body;
+	const hash = crc32(label);
+	const newHome = await prisma.home.create({
+		data: {
+			label: label,
+			hash: hash,
+		},
+	});
+	response.status(201).json(newHome);
 };
 
-const deleteHome = (request, response) => {
-  const hash = request.params.hash;
+const deleteHome = async (request, response) => {
+	const hash = request.params.hash;
 
-  pool.query("DELETE FROM home WHERE hash = $1", [hash], (error, results) => {
-    if (error) {
-      throw error;
-    }
-    response.status(200).send(`Home with hash ${hash} was deleted`);
-  });
+	const deletedHome = await prisma.home.delete({
+		where: {
+			hash,
+		},
+	});
+
+	response.status(204).json(deleteHome);
 };
 
 module.exports = { getHomes, getHome, createHome, deleteHome };

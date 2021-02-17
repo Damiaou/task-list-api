@@ -1,0 +1,8 @@
+@base_url = http://localhost:8080
+
+GET {{base_url}}/historyForTask
+Content-Type: application/json
+
+{
+    "task":2
+}

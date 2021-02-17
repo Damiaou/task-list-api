@@ -1,48 +1,99 @@
-const pool = require("./db.js");
+import { startOfWeek, startOfweek } from 'date-fns';
 
-const getHistories = (request, response) => {
-  pool.query("SELECT * FROM history", (error, results) => {
-    if (error) {
-      throw error;
-    }
-    response.status(200).json(results.rows);
-  });
+import { PrismaClient } from '@prisma/client';
+const prisma = new PrismaClient();
+
+const getHistories = async (request, response) => {
+	const histories = await prisma.history.deleteMany();
+	response.status(200).json(histories);
 };
 
-const getHistory = (request, response) => {
-  const { id } = request.body;
-  pool.query("SELECT * history WHERE id= $1", [id], (error, results) => {
-    if (error) {
-      throw error;
-    }
-    response.status(200).json(results.rows);
-  });
+const getHistory = async (request, response) => {
+	const { id } = request.body;
+	const history = await prisma.history.findUnique({
+		where: {
+			id,
+		},
+	});
+	response.status(200).json(history);
 };
 
-const createHistory = (request, response) => {
-  const { id_user, id_task, date } = request.body;
-  pool.query(
-    "INSERT history (id_user, id_task, date) VALUES ($1, $2, $3)",
-    [id_user, id_task, date],
-    (error, result) => {
-      if (error) {
-        throw error;
-      }
-
-      response.status(201).send(`History was added`);
-    }
-  );
+const createHistory = async (request, response) => {
+	const { id_user, id_task, date } = request.body;
+	const newHistory = await prisma.history.create({
+		data: {
+			id_user: id_user,
+			id_task: id_task,
+			date: date,
+		},
+	});
+	response.status(201).json(newHistory);
 };
 
-const deleteHistory = (request, response) => {
-  const id = request.params.id;
-
-  pool.query("DELETE history WHERE id = $1", [id], (error, results) => {
-    if (error) {
-      throw error;
-    }
-    response.status(200).send(`History with id ${id} was deleted`);
-  });
+const deleteHistory = async (request, response) => {
+	const id = request.params.id;
+	const deletedHistory = await prisma.history.delete({
+		where: {
+			id,
+		},
+	});
+	response.status(204).json(deletedHistory);
 };
 
-module.exports = { getHistories, getHistory, createHistory, deleteHistory };
+/**
+ * Get all histories for a specific task since the beginning of the current week
+ * @param {*} request
+ * @param {*} response
+ */
+const getHistoryForTaskForWeek = async (request, response) => {
+	const { task } = request.body;
+	if (!task) {
+		response.status(422).json({ code: 'Missing task param' });
+		return;
+	}
+	const currentWeekStart = startOfWeek(new Date());
+	const histories = await prisma.history.findMany({
+		where: {
+			when: {
+				gt: currentWeekStart,
+			},
+			task: {
+				id: task,
+			},
+		},
+	});
+	response.status(200).json(histories);
+};
+
+/**
+ * Get full history for last week for a home
+ * @param {*} request
+ * @param {*} response
+ */
+const getHistoryForLastWeek = async (request, response) => {
+	const home = request.body.length ? request.body.home : null;
+	if (!home) {
+		response.status(422).json({ code: 'Missing home param' });
+		return;
+	}
+	const currentWeekStart = startOfWeek(new Date());
+	const histories = await prisma.history.findMany({
+		where: {
+			when: {
+				gt: currentWeekStart,
+			},
+			home: {
+				hash: home,
+			},
+		},
+	});
+};
+
+module.exports = {
+	getHistoryForTaskForWeek,
+	getHistoryForLastWeek,
+	getHistories,
+	getHistory,
+	createHistory,
+	deleteHistory,
+};

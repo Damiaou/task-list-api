@@ -1,62 +1,54 @@
-const pool = require("./db.js");
+const pool = require('./db.js');
 
-const getTasksForHome = (request, response) => {
-  const hash = request.params.hash;
-  pool.query(
-    "SELECT * FROM task WHERE home_hash = $1",
-    [hash],
-    (error, results) => {
-      if (error) {
-        throw error;
-      }
-      response.status(200).json(results.rows);
-    }
-  );
+import { PrismaClient } from '@prisma/client';
+import { response } from 'express';
+const prisma = new PrismaClient();
+
+const getTasksForHome = async (request, response) => {
+	const hash = request.params.hash;
+	const tasks = await prisma.task.findMany({
+		where: {
+			home: hash,
+		},
+	});
+	response.status(200).json(tasks);
 };
 
-const getTasks = (request, response) => {
-  pool.query("SELECT * FROM task", (error, results) => {
-    if (error) {
-      throw error;
-    }
-    response.status(200).json(results.rows);
-  });
+const getTasks = async (request, response) => {
+	const tasks = await prisma.task.findMany();
+	response.status(200).json(tasks);
 };
 
-const getTask = (request, response) => {
-  const { id } = request.body;
-  pool.query("SELECT * FROM task WHERE id= $1", [id], (error, results) => {
-    if (error) {
-      throw error;
-    }
-    response.status(200).json(results.rows);
-  });
+const getTask = async (request, response) => {
+	const { id } = request.body;
+	const task = await prisma.task.findUnique({
+		where: {
+			id: id,
+		},
+	});
+	response.status(200).json(task);
 };
 
-const createTask = (request, response) => {
-  const { label, repeat, home_hash } = request.body;
-  pool.query(
-    "INSERT INTO task (label, done, id_repeat, id_done_by) VALUES ($1, $2, $3)",
-    [label, repeat, home_hash],
-    (error, result) => {
-      if (error) {
-        throw error;
-      }
-
-      response.status(201).send(`Task ${label} was added`);
-    }
-  );
+const createTask = async (request, response) => {
+	const { label, repeat, home_hash } = request.body;
+	const task = await prisma.task.create({
+		data: {
+			label: label,
+			done: done,
+			home_hash: home_hash,
+		},
+	});
+	response.status(201).json(task);
 };
 
-const deleteTask = (request, response) => {
-  const id = request.params.id;
-
-  pool.query("DELETE FROM task WHERE id = $1", [id], (error, results) => {
-    if (error) {
-      throw error;
-    }
-    response.status(200).send(`Task with id ${id} was deleted`);
-  });
+const deleteTask = async (request) => {
+	const { id } = request.params.id;
+	const deleteTask = await prisma.task.delete({
+		where: {
+			id: id,
+		},
+	});
+	response.status(204).json(deleteTask);
 };
 
 module.exports = { getTasks, getTask, createTask, deleteTask, getTasksForHome };
