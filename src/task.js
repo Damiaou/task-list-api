@@ -8,7 +8,9 @@ const getTasksForHome = async (request, response) => {
 	const hash = request.params.hash;
 	const tasks = await prisma.task.findMany({
 		where: {
-			home: hash,
+			home: {
+				hash: hash,
+			},
 		},
 	});
 	response.status(200).json(tasks);
