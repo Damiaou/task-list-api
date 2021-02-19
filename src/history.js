@@ -86,6 +86,9 @@ const getHistoryForLastWeek = async (request, response) => {
 				hash: home,
 			},
 		},
+		include: {
+			user: true,
+		},
 	});
 };
 
