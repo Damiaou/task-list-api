@@ -63,4 +63,4 @@ app.get('/history/:id', getHistory);
 app.post('/history', createHistory);
 app.delete('/history/:id', deleteHistory);
 app.get('/historyForWeek/', getHistoryForLastWeek);
-app.get('/historyForTask/', getHistoryForTaskForWeek);
+app.post('/historyForTask/', getHistoryForTaskForWeek);
