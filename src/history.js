@@ -61,6 +61,9 @@ const getHistoryForTaskForWeek = async (request, response) => {
 				id: task,
 			},
 		},
+		include: {
+			user: true,
+		},
 	});
 	response.status(200).json(histories);
 };
@@ -85,9 +88,6 @@ const getHistoryForLastWeek = async (request, response) => {
 			home: {
 				hash: home,
 			},
-		},
-		include: {
-			user: true,
 		},
 	});
 };
