@@ -1,4 +1,4 @@
-import { startOfWeek, startOfweek } from 'date-fns';
+import { startOfWeek, formatISO } from 'date-fns';
 
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
@@ -24,7 +24,7 @@ const createHistory = async (request, response) => {
 		data: {
 			id_user: id_user,
 			id_task: id_task,
-			date: date,
+			date: formatISO(date),
 		},
 	});
 	response.status(201).json(newHistory);
