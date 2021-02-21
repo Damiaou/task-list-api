@@ -51,7 +51,7 @@ const getHistoryForTaskForWeek = async (request, response) => {
 		response.status(422).json({ code: 'Missing task param' });
 		return;
 	}
-	const currentWeekStart = startOfWeek(Date.now());
+	const currentWeekStart = startOfWeek(Date.now(), { weekStartsOn: 1 });
 	console.log(currentWeekStart);
 	const histories = await prisma.history.findMany({
 		where: {
@@ -80,7 +80,7 @@ const getHistoryForLastWeek = async (request, response) => {
 		response.status(422).json({ code: 'Missing home param' });
 		return;
 	}
-	const currentWeekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
+	const currentWeekStart = startOfWeek(Date.now(), { weekStartsOn: 1 });
 	const histories = await prisma.history.findMany({
 		where: {
 			when: {
