@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 const getHistories = async (request, response) => {
-	const histories = await prisma.history.deleteMany();
+	const histories = await prisma.history.findMany();
 	response.status(200).json(histories);
 };
 
@@ -52,6 +52,7 @@ const getHistoryForTaskForWeek = async (request, response) => {
 		return;
 	}
 	const currentWeekStart = startOfWeek(new Date());
+	console.log(currentWeekStart);
 	const histories = await prisma.history.findMany({
 		where: {
 			when: {
