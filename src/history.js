@@ -19,12 +19,12 @@ const getHistory = async (request, response) => {
 };
 
 const createHistory = async (request, response) => {
-	const { id_user, id_task, date } = request.body;
+	const { id_user, id_task, when } = request.body;
 	const newHistory = await prisma.history.create({
 		data: {
 			id_user: id_user,
 			id_task: id_task,
-			date: date,
+			when: when,
 		},
 	});
 	response.status(201).json(newHistory);
