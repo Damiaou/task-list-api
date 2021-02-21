@@ -36,7 +36,7 @@ const createTask = async (request, response) => {
 	const task = await prisma.task.create({
 		data: {
 			label: label,
-			repeat: repeat,
+			repeat: parseInt(repeat),
 			home_hash: home_hash,
 		},
 	});
