@@ -49,7 +49,7 @@ app.get('/user', getUsers);
 app.get('/user/:email', cors(), getUser);
 app.post('/user', createUser);
 app.delete('/user/:id', deleteUser);
-app.post('/login', login);
+app.post('/login', cors(), login);
 
 //        TASK
 app.get('/task', getTasks);
