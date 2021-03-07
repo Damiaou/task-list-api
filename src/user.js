@@ -61,4 +61,4 @@ const deleteUser = async (request, response) => {
 	response.status(204).json(deletedUser);
 };
 
-module.exports = { getUsers, getUser, createUser, deleteUser };
+module.exports = { login, getUsers, getUser, createUser, deleteUser };

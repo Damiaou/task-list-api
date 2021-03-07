@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { getHomes, getHome, createHome, deleteHome } = require('./home');
-const { getUsers, getUser, createUser, deleteUser } = require('./user');
+const { login, getUsers, getUser, createUser, deleteUser } = require('./user');
 const { getTasks, getTask, createTask, deleteTask, getTasksForHome } = require('./task');
 const {
 	getHistoryForTaskForWeek,
@@ -49,6 +49,7 @@ app.get('/user', getUsers);
 app.get('/user/:email', cors(), getUser);
 app.post('/user', createUser);
 app.delete('/user/:id', deleteUser);
+app.post('/login', login);
 
 //        TASK
 app.get('/task', getTasks);
