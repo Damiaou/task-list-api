@@ -18,7 +18,7 @@ const login = async (request, response) => {
 			data: {
 				email,
 				home_hash,
-				color: 'FFFFF',
+				color: '#FFFFF',
 			},
 		});
 		return response.status(201).json(newUser);
