@@ -11,7 +11,7 @@ const login = async (request, response) => {
 		},
 	});
 
-	if (existingUser.count > 0) {
+	if (existingUser) {
 		return response.status(200).json(existingUser);
 	} else {
 		const newUser = await prisma.user.create({
