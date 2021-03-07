@@ -21,7 +21,7 @@ const login = async (request, response) => {
 				color: 'FFFFF',
 			},
 		});
-		return response.status(201).json(newUuser);
+		return response.status(201).json(newUser);
 	}
 };
 
